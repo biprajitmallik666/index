@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>中文学习者 | Chinese Learner</title>
+<style>
+:root{
+  --ink:#172033;--muted:#687386;--red:#cf3027;--red-dark:#a9231d;
+  --gold:#d7b36a;--navy:#111827;--navy2:#1c2940;--paper:#f6f7fb;
+  --white:#fff;--line:#e6e9f0;--shadow:0 18px 50px rgba(20,30,50,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+.topbar{height:72px;padding:0 clamp(18px,5vw,70px);display:flex;align-items:center;justify-content:space-between;background:rgba(17,24,39,.97);color:white;position:sticky;top:0;z-index:10;box-shadow:0 5px 22px #10182722}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+.brand-mark{width:38px;height:38px;border:1px solid #d7b36a88;border-radius:12px;display:grid;place-items:center;color:var(--gold);font-size:22px}
+.brand small{display:block;font-size:10px;letter-spacing:2px;color:#aab4c4;font-weight:600;margin-top:2px}
+.nav{display:flex;gap:8px;align-items:center}
+.nav button{background:transparent;color:#d6dce7;padding:10px 14px;border-radius:10px;font-size:14px}
+.nav button:hover,.nav button.active{background:#ffffff16;color:white}
+.menu-toggle{display:none;background:#ffffff16;color:white;padding:10px 13px;border-radius:9px}
+.page{display:none;min-height:calc(100vh - 72px)}
+.page.active{display:block}
+.hero{background:radial-gradient(circle at 80% 20%,#354866 0,transparent 34%),linear-gradient(125deg,#101827,#202e45);color:white;padding:clamp(48px,9vw,100px) clamp(20px,8vw,110px) 76px;position:relative;overflow:hidden}
+.hero:after{content:"中";position:absolute;right:8%;top:2%;font-family:serif;font-size:clamp(180px,30vw,360px);font-weight:900;color:#ffffff08;pointer-events:none}
+.hero-inner{max-width:1120px;margin:auto;position:relative;z-index:1}
+.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase}
+.hero h1{font-size:clamp(38px,7vw,76px);line-height:1.04;max-width:760px;margin:18px 0}
+.hero h1 span{color:var(--gold)}
+.hero p{max-width:610px;color:#c4ccda;line-height:1.8;font-size:clamp(15px,2vw,18px)}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{padding:13px 20px;border-radius:12px;font-weight:750;transition:.2s;display:inline-flex;justify-content:center;align-items:center;gap:8px}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--red);color:white;box-shadow:0 8px 22px #cf302744}
+.btn-primary:hover{background:var(--red-dark)}
+.btn-outline{border:1px solid #ffffff55;color:white;background:#ffffff0d}
+.btn-light{background:white;color:var(--ink);border:1px solid var(--line)}
+.btn-muted{background:#eef1f6;color:#344054}
+.content{max-width:1120px;margin:auto;padding:48px 22px 70px}
+.section-heading{margin-bottom:22px}
+.section-heading .eyebrow{color:var(--red);letter-spacing:2px}
+.section-heading h2{font-size:clamp(25px,4vw,36px);margin:8px 0}
+.section-heading p{color:var(--muted);line-height:1.6}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feature{background:white;border:1px solid var(--line);border-radius:18px;padding:25px;box-shadow:0 8px 25px #15213a08;cursor:pointer;transition:.22s}
+.feature:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:#e7b6b1}
+.feature-icon{width:48px;height:48px;border-radius:14px;background:#fff0ee;display:grid;place-items:center;font-size:24px;margin-bottom:18px}
+.feature h3{font-size:19px;margin-bottom:8px}
+.feature p{font-size:14px;color:var(--muted);line-height:1.65}
+.feature .learn{display:inline-block;color:var(--red);font-size:13px;font-weight:800;margin-top:18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.stat{padding:18px;background:#fff;border:1px solid var(--line);border-radius:15px}
+.stat strong{display:block;font-size:27px;color:var(--red)}
+.stat span{font-size:13px;color:var(--muted)}
+.panel{background:white;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:clamp(20px,4vw,36px)}
+.panel-wrap{max-width:850px;margin:0 auto}
+.panel-title{text-align:center;margin-bottom:25px}
+.panel-title h2{font-size:clamp(25px,4vw,34px);margin-bottom:8px}
+.panel-title p{color:var(--muted);line-height:1.6}
+.form-label{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;font-weight:800;color:#667085;display:block;margin-bottom:9px}
+textarea{width:100%;min-height:125px;padding:16px;border:1.5px solid var(--line);border-radius:13px;resize:vertical;outline:none;color:var(--ink);background:#fcfcfe}
+textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px #cf302718}
+.result{margin-top:18px;border:1px solid #f0d3d0;background:#fffafa;border-radius:14px;padding:20px;min-height:125px}
+.hanzi{font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:clamp(28px,5vw,42px);line-height:1.5;word-break:break-word;color:#151b27}
+.pinyin{border-top:1px solid var(--line);padding-top:12px;margin-top:12px;color:#667085;font-size:17px;font-style:italic;word-break:break-word}
+.helper{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.5}
+.card-stage{max-width:650px;margin:0 auto}
+.flashcard{background:linear-gradient(145deg,#fff,#fffaf8);border:1px solid #f0e5e1;border-radius:22px;min-height:300px;padding:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow)}
+.card-character{font-family:"Songti SC","STSong","SimSun",serif;font-size:clamp(76px,13vw,112px);line-height:1.2;color:#20283a}
+.card-pinyin{font-size:25px;color:var(--red);font-weight:750;margin-top:15px}
+.card-meaning{font-size:18px;color:#697386;margin-top:8px}
+.concealed{visibility:hidden}
+.card-controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+.progress-row{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin:18px 2px 8px}
+.progress-track{height:8px;background:#e9edf3;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--red),#e5a36c);width:1%;transition:width .2s}
+.daily{margin-top:25px;padding:20px;border-radius:16px;background:#18243a;color:white;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.daily .hanzi{color:var(--gold);font-size:35px}
+.daily p{color:#c3ccda;font-size:13px;margin-top:4px}
+.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+.about-card{background:white;border:1px solid var(--line);border-radius:18px;padding:25px}
+.about-card p,.about-card li{color:var(--muted);line-height:1.8;font-size:14px}
+.about-card ul{padding-left:20px;margin-top:10px}
+.footer{background:#101827;color:#9da9bb;text-align:center;padding:25px 18px;font-size:12px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#172033;color:white;padding:12px 18px;border-radius:10px;box-shadow:var(--shadow);z-index:20;font-size:13px}
+@media(max-width:760px){
+ .topbar{height:64px}.menu-toggle{display:block}.nav{display:none;position:absolute;top:64px;left:0;right:0;background:#111827;padding:12px 18px 18px;flex-direction:column;align-items:stretch}
+ .nav.open{display:flex}.nav button{text-align:left;padding:13px}
+ .page{min-height:calc(100vh - 64px)}.feature-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}
+ .about-grid{grid-template-columns:1fr}.hero{padding-top:58px}.daily{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:420px){.stats{grid-template-columns:1fr}.card-controls .btn{flex:1 1 40%}.panel{padding:18px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="brand-mark">中</div><div>中文学习者<small>CHINESE LEARNER</small></div></div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open navigation">☰</button>
+  <nav class="nav" id="nav">
+    <button class="active" data-page="home">Home</button>
+    <button data-page="translator">Translator</button>
+    <button data-page="flashcards">Flashcards</button>
+    <button data-page="about">About</button>
+  </nav>
+</header>
+
+<main>
+<section class="page active" id="home">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Your Mandarin learning companion</div>
+      <h1>Discover the world of <span>Chinese.</span></h1>
+      <p>Learn useful Chinese words, explore Hanzi characters, understand Pinyin and practise pronunciation — all in one simple learning space.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="showPage('translator')">Enter Learning&nbsp; →</button>
+        <button class="btn btn-outline" onclick="showPage('flashcards')">Explore Flashcards</button>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="section-heading"><div class="eyebrow">Start learning</div><h2>Choose your learning space</h2><p>Select a tool below to begin your Chinese learning journey.</p></div>
+    <div class="feature-grid">
+      <article class="feature" onclick="showPage('translator')"><div class="feature-icon">🌏</div><h3>English–Chinese Translator</h3><p>Enter supported English words or phrases to view Chinese characters and their Pinyin.</p><span class="learn">Open translator →</span></article>
+      <article class="feature" onclick="showPage('flashcards')"><div class="feature-icon">📚</div><h3>Vocabulary Flashcards</h3><p>Practise Chinese numbers from zero to one hundred. Reveal meanings and move through the cards.</p><span class="learn">Start practising →</span></article>
+      <article class="feature" onclick="showPage('about')"><div class="feature-icon">🎓</div><h3>About the Project</h3><p>Understand the purpose, key features and technologies used in this PBL learning project.</p><span class="learn">View project →</span></article>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong>101</strong><span>Number flashcards (0–100)</span></div>
+      <div class="stat"><strong>Hanzi</strong><span>Chinese character display</span></div>
+      <div class="stat"><strong>Audio</strong><span>Browser speech synthesis</span></div>
+    </div>
+    <div class="daily"><div><div class="eyebrow">Word of the day</div><div class="hanzi" id="dailyHanzi">你好</div><p id="dailyPinyin">nǐ hǎo · Hello</p></div><button class="btn btn-outline" onclick="showPage('translator')">Try the translator →</button></div>
+  </div>
+</section>
+
+<section class="page" id="translator">
+  <div class="content">
+    <div class="panel-wrap">
+      <div class="panel-title"><div class="eyebrow">Translation tool</div><h2>English to Chinese & Pinyin</h2><p>Type a supported English word or phrase to see its Chinese characters and Pinyin.</p></div>
+      <div class="panel">
+        <label class="form-label" for="englishInput">English input</label>
+        <textarea id="englishInput" placeholder="Try: hello, thank you, how are you, family..."></textarea>
+        <div class="result" aria-live="polite"><div class="form-label">Chinese characters · Hanzi</div><div id="hanziOutput" class="hanzi" style="color:#98a2b3;font-size:18px">Your translation will appear here.</div><div id="pinyinOutput" class="pinyin hidden"></div></div>
+        <p class="helper">Note: This project uses a built-in dictionary of supported words and phrases. Words outside the dictionary are shown in brackets.</p>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px">
+        <button class="btn btn-light" onclick="clearTranslator()">Clear</button>
+        <button class="btn btn-primary" onclick="speakTranslation()">🔊 Listen to Chinese</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="flashcards">
+  <div class="content">
+    <div class="panel-title"><div class="eyebrow">Practice & remember</div><h2>Chinese Vocabulary Flashcards</h2><p>Reveal the Pinyin and English meaning, listen to the character, and practise at your own pace.</p></div>
+    <div class="card-stage">
+      <div class="flashcard">
+        <div class="form-label">Chinese character</div>
+        <div class="card-character" id="character">零</div>
+        <div class="card-pinyin concealed" id="pinyin">líng</div>
+        <div class="card-meaning concealed" id="meaning">Zero</div>
+      </div>
+      <div class="progress-row"><span id="progress">Card 1 of 101</span><span id="completed">0 revealed</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="card-controls">
+        <button class="btn btn-light" id="prevBtn">← Back</button>
+        <button class="btn btn-muted" id="revealBtn">👁 Reveal</button>
+        <button class="btn btn-muted" id="audioBtn">🔊 Listen</button>
+        <button class="btn btn-primary" id="nextBtn">Next →</button>
+      </div>
+      <p class="helper" style="text-align:center">Use Reveal to show the answer. Your revealed-card count is saved in this browser.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="about">
+  <div class="content">
+    <div class="panel-title"><div class="eyebrow">Project overview</div><h2>About Chinese Learner</h2><p>An interactive beginner-friendly tool for exploring basic Mandarin vocabulary.</p></div>
+    <div class="about-grid">
+      <div class="about-card"><h3 style="margin-bottom:12px">Project objective</h3><p>The objective of this project is to provide a simple digital learning platform that helps beginners explore common English-to-Chinese word mappings, view Pinyin romanization and practise basic Chinese number vocabulary through interactive flashcards.</p><br><h3 style="margin-bottom:10px">Main features</h3><ul><li>English word and phrase lookup using a built-in dictionary.</li><li>Chinese Hanzi and Pinyin output.</li><li>101 number flashcards covering zero to one hundred.</li><li>Reveal, previous and next flashcard controls.</li><li>Chinese character audio through browser text-to-speech, where supported.</li><li>Responsive layout for desktop and mobile screens.</li></ul></div>
+      <div class="about-card"><h3 style="margin-bottom:12px">Technologies used</h3><ul><li><b>HTML</b> — page structure.</li><li><b>CSS</b> — layout, styling and responsiveness.</li><li><b>JavaScript</b> — dictionary lookup and flashcard interaction.</li><li><b>Web Speech API</b> — text-to-speech pronunciation.</li></ul><br><h3 style="margin-bottom:10px">Important note</h3><p>The translator is a predefined dictionary-based prototype, not a full sentence translation service. Audio availability and voice quality depend on the browser and installed Chinese voices.</p><br><button class="btn btn-primary" onclick="showPage('home')">← Back to Home</button></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer">中文学习者 · Chinese Learner | PBL Interactive Learning Project</footer>
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script>
+const dictionary = {
+            "you": { hanzi: "你", pinyin: "nǐ" },
+            "hello": { hanzi: "你好", pinyin: "nǐ hǎo" },
+            "hi": { hanzi: "你好", pinyin: "nǐ hǎo" },
+            "how are you": { hanzi: "你好吗？", pinyin: "nǐ hǎo ma?" },
+            "thank you": { hanzi: "谢谢", pinyin: "xièxie" },
+            "thanks": { hanzi: "谢谢", pinyin: "xièxie" },
+            "goodbye": { hanzi: "再见", pinyin: "zàijiàn" },
+            "bye": { hanzi: "再见", pinyin: "zàijiàn" },
+            "welcome": { hanzi: "欢迎", pinyin: "huānyíng" },
+            "family": { hanzi: "家人", pinyin: "jiārén" },
+            "love": { hanzi: "爱", pinyin: "ài" },
+            "friend": { hanzi: "朋友", pinyin: "péngyou" },
+            "good": { hanzi: "好", pinyin: "hǎo" },
+            "yes": { hanzi: "是的", pinyin: "shì de" },
+            "no": { hanzi: "不", pinyin: "bù" },
+            "please": { hanzi: "请", pinyin: "qǐng" },
+            "china": { hanzi: "中国", pinyin: "Zhōngguó" },
+            "english": { hanzi: "英语", pinyin: "Yīngyǔ" },
+            "happy": { hanzi: "快乐", pinyin: "kuàilè" },
+            "beautiful": { hanzi: "美丽", pinyin: "měilì" },
+            "cat": { hanzi: "猫", pinyin: "māo" },
+            "dog": { hanzi: "狗", pinyin: "gǒu" },
+            "water": { hanzi: "水", pinyin: "shuǐ" },
+            "tea": { hanzi: "茶", pinyin: "chá" },
+            "coffee": { hanzi: "咖啡", pinyin: "kāfēi" },
+            "food": { hanzi: "食物", pinyin: "shíwù" },
+            "to come": { hanzi: "来", pinyin: "lái" },
+            "to be": { hanzi: "是", pinyin: "shì" },
+            "is": { hanzi: "是", pinyin: "shì" },
+            "are": { hanzi: "是", pinyin: "shì" },
+            "am": { hanzi: "是", pinyin: "shì" },
+            "miss": { hanzi: "小姐", pinyin: "xiǎojiě" },
+            "mr": { hanzi: "先生", pinyin: "xiānsheng" },
+            "we": { hanzi: "我们", pinyin: "wǒmen" },
+            "us": { hanzi: "我们", pinyin: "wǒmen" },
+            "i": { hanzi: "我", pinyin: "wǒ" },
+            "my": { hanzi: "我", pinyin: "wǒ" },
+            "this": { hanzi: "这", pinyin: "zhè" },
+            "fine": { hanzi: "好", pinyin: "hǎo" },
+            "to be surnamed": { hanzi: "姓", pinyin: "xìng" },
+            "taiwan": { hanzi: "台湾", pinyin: "Táiwān" },
+            "may i ask": { hanzi: "请问", pinyin: "qǐngwèn" },
+            "excuse me": { hanzi: "不好意思", pinyin: "bù hǎoyìsi" },
+            "can": { hanzi: "可以", pinyin: "kěyǐ" },
+            "may": { hanzi: "可以", pinyin: "kěyǐ" },
+            "to drink": { hanzi: "喝", pinyin: "hē" },
+            "very": { hanzi: "很", pinyin: "hěn" },
+            "what": { hanzi: "什么", pinyin: "shénme" },
+            "person": { hanzi: "人", pinyin: "rén" },
+            "people": { hanzi: "人", pinyin: "rén" },
+            "to like": { hanzi: "喜欢", pinyin: "xǐhuan" },
+            "like": { hanzi: "喜欢", pinyin: "xǐhuan" },
+            "he": { hanzi: "他", pinyin: "tā" },
+            "him": { hanzi: "他", pinyin: "tā" },
+            "not": { hanzi: "不", pinyin: "bù" },
+            "which": { hanzi: "哪", pinyin: "nǎ" },
+            "to want to": { hanzi: "要", pinyin: "yào" },
+             " want ": { hanzi: "要", pinyin: "yào" },
+             " want to": { hanzi: "要", pinyin: "yào" },
+            "india": { hanzi: "印度", pinyin: "Yìndù" },
+            "japan": { hanzi: "日本", pinyin: "Rìběn" },
+            "america": { hanzi: "美国", pinyin: "Měiguó" },
+            "indian": { hanzi: "印度人", pinyin: "Yìndùrén" },
+            "japanese": { hanzi: "日本人", pinyin: "Rìběnrén" },
+            "american": { hanzi: "美国人", pinyin: "Měiguórén" },
+            "chinese": { hanzi: "中国人", pinyin: "Zhōngguórén" },
+            "i am sorry": { hanzi: "对不起。", pinyin: "duìbuqǐ." },
+            "home": { hanzi: "家", pinyin: "jiā" },
+            "ok": { hanzi: "好", pinyin: "hǎo a" },
+            "house": { hanzi: "房子", pinyin: "fángzi" },
+            "pretty": { hanzi: "漂亮", pinyin: "piàoliang" },
+            "to sit": { hanzi: "坐", pinyin: "zuò" },
+            "to do": { hanzi: "做", pinyin: "zuò" },
+            "to have": { hanzi: "有", pinyin: "yǒu" },
+            "many": { hanzi: "多", pinyin: "duō" },
+            "photo": { hanzi: "照片", pinyin: "zhàopiàn" },
+            "all": { hanzi: "都", pinyin: "dōu" },
+            "both": { hanzi: "都", pinyin: "dōu" },
+            "to take a photo": { hanzi: "拍照", pinyin: "pāizhào" },
+            "good looking": { hanzi: "好看", pinyin: "hǎokàn" },
+            "who": { hanzi: "谁", pinyin: "shéi" },
+            "older sister": { hanzi: "姐姐", pinyin: "jiějie" },
+            "younger sister": { hanzi: "妹妹", pinyin: "mèimei" },
+            "elder sister": { hanzi: "姐姐", pinyin: "jiějie" },
+"younger sister": { hanzi: "妹妹", pinyin: "mèimei" },
+"elder sister's": { hanzi: "姐姐", pinyin: "jiějie" },
+"younger sister's": { hanzi: "妹妹", pinyin: "mèimei" },
+"older sister's": { hanzi: "姐姐", pinyin: "jiějie" },
+            "dad": { hanzi: "爸爸", pinyin: "bàba" },
+            "mom": { hanzi: "妈妈", pinyin: "māma" },
+            "dad's": { hanzi: "爸爸", pinyin: "bàba" },
+            "mom's": { hanzi: "妈妈", pinyin: "māma" },
+            "please come in": { hanzi: "请进", pinyin: "qǐngjìn" },
+            "you honorific": { hanzi: "您", pinyin: "nín" },
+            "name": { hanzi: "名字", pinyin: "míngzi" },
+            "book": { hanzi: "书", pinyin: "shū" },
+            "elder brother": { hanzi: "哥哥", pinyin: "gēge" },
+            "older brother": { hanzi: "哥哥", pinyin: "gēge" },
+            "younger brother": { hanzi: "弟弟", pinyin: "dìdi" },
+            "elder brother's": { hanzi: "哥哥", pinyin: "gēge" },
+            "younger brother's": { hanzi: "弟弟", pinyin: "dìdi" },
+            "teacher": { hanzi: "老师", pinyin: "lǎoshī" },
+            "to read": { hanzi: "读", pinyin: "dú" },
+            "how many": { hanzi: "几", pinyin: "jǐ" },
+            "brothers": { hanzi: "兄弟", pinyin: "xiōngdì" },
+            "sisters": { hanzi: "姐妹", pinyin: "jiěmèi" },
+            "brother's": { hanzi: "兄弟", pinyin: "xiōngdì" },
+            "sister's": { hanzi: "姐妹", pinyin: "jiěmèi" },
+             "sister": { hanzi: "姐妹", pinyin: "jiěmèi" },
+"brother": { hanzi: "兄弟", pinyin: "xiōngdì" },
+            "five": { hanzi: "五", pinyin: "wǔ" },
+            "aunt": { hanzi: "伯母", pinyin: "bómǔ" },
+            "i'm sorry": { hanzi: "对不起", pinyin: "duìbuqǐ" },
+            "sorry": { hanzi: "抱歉", pinyin: "bàoqiàn" },
+            "which country": { hanzi: "哪国", pinyin: "nǎguó" },
+            "to be": { hanzi: "是", pinyin: "shì" },
+"weekend": { hanzi: "周末", pinyin: "zhōumò" },
+"to listen": { hanzi: "听", pinyin: "tīng" },
+"listen": { hanzi: "听", pinyin: "tīng" },
+"music": { hanzi: "音乐", pinyin: "yīnyuè" },
+"sports": { hanzi: "运动", pinyin: "yùndòng" },
+"to play": { hanzi: "打", pinyin: "dǎ" },
+"tennis": { hanzi: "网球", pinyin: "wǎngqiú" },
+"baseball": { hanzi: "棒球", pinyin: "bàngqiú" },
+"and": { hanzi: "和", pinyin: "hàn" },
+"as well as": { hanzi: "和", pinyin: "hàn" },
+"to swim": { hanzi: "游泳", pinyin: "yóuyǒng" },
+"often": { hanzi: "常", pinyin: "cháng" },
+"basketball": { hanzi: "篮球", pinyin: "lánqiú" },
+"also": { hanzi: "也", pinyin: "yě" },
+"to play football": { hanzi: "踢足球", pinyin: "tī zúqiú" },
+ "football": { hanzi: "足球", pinyin: "zúqiú" },
+"to feel": { hanzi: "觉得", pinyin: "juéde" },
+"to think": { hanzi: "觉得", pinyin: "juéde" },
+"interesting": { hanzi: "好玩", pinyin: "hǎowán" },
+"fun": { hanzi: "好玩", pinyin: "hǎowán" },
+"tomorrow": { hanzi: "明天", pinyin: "míngtiān" },
+"morning": { hanzi: "早上", pinyin: "zǎoshang" },
+"today": { hanzi: "今天", pinyin: "jīntiān" },
+"yesterday": { hanzi: "昨天", pinyin: "zuótiān" },
+"evening": { hanzi: "晚上", pinyin: "wǎnshang" },
+"night": { hanzi: "晚上", pinyin: "wǎnshang" },
+"afternoon": { hanzi: "下午", pinyin: "xiàwǔ" },
+"to go": { hanzi: "去", pinyin: "qù" },
+"do what": { hanzi: "做什么", pinyin: "zuò shénme" },
+"ok": { hanzi: "好", pinyin: "hǎo a" },
+"one": { hanzi: "一", pinyin: "yī" },
+"two": { hanzi: "二", pinyin: "èr" },
+"three": { hanzi: "三", pinyin: "sān" },
+"four": { hanzi: "四", pinyin: "sì" },
+"six": { hanzi: "六", pinyin: "liù" },
+"seven": { hanzi: "七", pinyin: "qī" },
+"eight": { hanzi: "八", pinyin: "bā" },
+"nine": { hanzi: "九", pinyin: "jiǔ" },
+"ten": { hanzi: "十", pinyin: "shí" },
+"to see": { hanzi: "看", pinyin: "kàn" },
+"to watch": { hanzi: "看", pinyin: "kàn" },
+"movie": { hanzi: "电影", pinyin: "diànyǐng" },
+"or": { hanzi: "还是", pinyin: "háishi" },
+"ba": { hanzi: "吧", pinyin: "ba" },
+"could": { hanzi: "可以", pinyin: "kěyǐ" },
+"to learn": { hanzi: "学", pinyin: "xué" },
+"to study": { hanzi: "学", pinyin: "xué" },
+"chinese language": { hanzi: "中文", pinyin: "Zhōngwén" },
+"together": { hanzi: "一起", pinyin: "yīqǐ" },
+"to eat": { hanzi: "吃", pinyin: "chī" },
+"eat": { hanzi: "吃", pinyin: "chī" },
+"dinner": { hanzi: "晚饭", pinyin: "wǎnfàn" },
+"cuisine": { hanzi: "菜", pinyin: "cài" },
+"vietnam": { hanzi: "越南", pinyin: "Yuènán" },
+"vietnamese": { hanzi: "越南人", pinyin: "Yuènánrén" },
+"taiwanese": { hanzi: "台湾人", pinyin: "Táiwānrén" }
+        };
+
+const characterDataset = [
+            { character: '零', pinyin: 'líng', meaning: 'Zero' },
+            { character: '一', pinyin: 'yī', meaning: 'One' },
+            { character: '二', pinyin: 'èr', meaning: 'Two' },
+            { character: '三', pinyin: 'sān', meaning: 'Three' },
+            { character: '四', pinyin: 'sì', meaning: 'Four' },
+            { character: '五', pinyin: 'wǔ', meaning: 'Five' },
+            { character: '六', pinyin: 'liù', meaning: 'Six' },
+            { character: '七', pinyin: 'qī', meaning: 'Seven' },
+            { character: '八', pinyin: 'bā', meaning: 'Eight' },
+            { character: '九', pinyin: 'jiǔ', meaning: 'Nine' },
+            { character: '十', pinyin: 'shí', meaning: 'Ten' },
+            { character: '十一', pinyin: 'shíyī', meaning: 'Eleven' },
+            { character: '十二', pinyin: 'shíèr', meaning: 'Twelve' },
+            { character: '十三', pinyin: 'shísān', meaning: 'Thirteen' },
+            { character: '十四', pinyin: 'shísì', meaning: 'Fourteen' },
+            { character: '十五', pinyin: 'shíwǔ', meaning: 'Fifteen' },
+            { character: '十六', pinyin: 'shíliù', meaning: 'Sixteen' },
+            { character: '十七', pinyin: 'shíqī', meaning: 'Seventeen' },
+            { character: '十八', pinyin: 'shíbā', meaning: 'Eighteen' },
+            { character: '十九', pinyin: 'shíjiǔ', meaning: 'Nineteen' },
+            { character: '二十', pinyin: 'èrshí', meaning: 'Twenty' },
+            { character: '二十一', pinyin: 'èrshíyī', meaning: 'Twenty-one' },
+            { character: '二十二', pinyin: 'èrshíèr', meaning: 'Twenty-two' },
+            { character: '二十三', pinyin: 'èrshísān', meaning: 'Twenty-three' },
+            { character: '二十四', pinyin: 'èrshísì', meaning: 'Twenty-four' },
+            { character: '二十五', pinyin: 'èrshíwǔ', meaning: 'Twenty-five' },
+            { character: '二十六', pinyin: 'èrshíliù', meaning: 'Twenty-six' },
+            { character: '二十七', pinyin: 'èrshíqī', meaning: 'Twenty-seven' },
+            { character: '二十八', pinyin: 'èrshíbā', meaning: 'Twenty-eight' },
+            { character: '二十九', pinyin: 'èrshíjiǔ', meaning: 'Twenty-nine' },
+            { character: '三十', pinyin: 'sānshí', meaning: 'Thirty' },
+            { character: '三十一', pinyin: 'sānshíyī', meaning: 'Thirty-one' },
+            { character: '三十二', pinyin: 'sānshíèr', meaning: 'Thirty-two' },
+            { character: '三十三', pinyin: 'sānshísān', meaning: 'Thirty-three' },
+            { character: '三十四', pinyin: 'sānshísì', meaning: 'Thirty-four' },
+            { character: '三十五', pinyin: 'sānshíwǔ', meaning: 'Thirty-five' },
+            { character: '三十六', pinyin: 'sānshíliù', meaning: 'Thirty-six' },
+            { character: '三十七', pinyin: 'sānshíqī', meaning: 'Thirty-seven' },
+            { character: '三十八', pinyin: 'sānshíbā', meaning: 'Thirty-eight' },
+            { character: '三十九', pinyin: 'sānshíjiǔ', meaning: 'Thirty-nine' },
+            { character: '四十', pinyin: 'sìshí', meaning: 'Forty' },
+            { character: '四十一', pinyin: 'sìshíyī', meaning: 'Forty-one' },
+            { character: '四十二', pinyin: 'sìshíèr', meaning: 'Forty-two' },
+            { character: '四十三', pinyin: 'sìshísān', meaning: 'Forty-three' },
+            { character: '四十四', pinyin: 'sìshísì', meaning: 'Forty-four' },
+            { character: '四十五', pinyin: 'sìshíwǔ', meaning: 'Forty-five' },
+            { character: '四十六', pinyin: 'sìshíliù', meaning: 'Forty-six' },
+            { character: '四十七', pinyin: 'sìshíqī', meaning: 'Forty-seven' },
+            { character: '四十八', pinyin: 'sìshíbā', meaning: 'Forty-eight' },
+            { character: '四十九', pinyin: 'sìshíjiǔ', meaning: 'Forty-nine' },
+            { character: '五十', pinyin: 'wǔshí', meaning: 'Fifty' },
+            { character: '五十一', pinyin: 'wǔshíyī', meaning: 'Fifty-one' },
+            { character: '五十二', pinyin: 'wǔshíèr', meaning: 'Fifty-two' },
+            { character: '五十三', pinyin: 'wǔshísān', meaning: 'Fifty-three' },
+            { character: '五十四', pinyin: 'wǔshísì', meaning: 'Fifty-four' },
+            { character: '五十五', pinyin: 'wǔshíwǔ', meaning: 'Fifty-five' },
+            { character: '五十六', pinyin: 'wǔshíliù', meaning: 'Fifty-six' },
+            { character: '五十七', pinyin: 'wǔshíqī', meaning: 'Fifty-seven' },
+            { character: '五十八', pinyin: 'wǔshíbā', meaning: 'Fifty-eight' },
+            { character: '五十九', pinyin: 'wǔshíjiǔ', meaning: 'Fifty-nine' },
+            { character: '六十', pinyin: 'liùshí', meaning: 'Sixty' },
+            { character: '六十一', pinyin: 'liùshíyī', meaning: 'Sixty-one' },
+            { character: '六十二', pinyin: 'liùshíèr', meaning: 'Sixty-two' },
+            { character: '六十三', pinyin: 'liùshísān', meaning: 'Sixty-three' },
+            { character: '六十四', pinyin: 'liùshísì', meaning: 'Sixty-four' },
+            { character: '六十五', pinyin: 'liùshíwǔ', meaning: 'Sixty-five' },
+            { character: '六十六', pinyin: 'liùshíliù', meaning: 'Sixty-six' },
+            { character: '六十七', pinyin: 'liùshíqī', meaning: 'Sixty-seven' },
+            { character: '六十八', pinyin: 'liùshíbā', meaning: 'Sixty-eight' },
+            { character: '六十九', pinyin: 'liùshíjiǔ', meaning: 'Sixty-nine' },
+            { character: '七十', pinyin: 'qīshí', meaning: 'Seventy' },
+            { character: '七十一', pinyin: 'qīshíyī', meaning: 'Seventy-one' },
+            { character: '七十二', pinyin: 'qīshíèr', meaning: 'Seventy-two' },
+            { character: '七十三', pinyin: 'qīshísān', meaning: 'Seventy-three' },
+            { character: '七十四', pinyin: 'qīshísì', meaning: 'Seventy-four' },
+            { character: '七十五', pinyin: 'qīshíwǔ', meaning: 'Seventy-five' },
+            { character: '七十六', pinyin: 'qīshíliù', meaning: 'Seventy-six' },
+            { character: '七十七', pinyin: 'qīshíqī', meaning: 'Seventy-seven' },
+            { character: '七十八', pinyin: 'qīshíbā', meaning: 'Seventy-eight' },
+            { character: '七十九', pinyin: 'qīshíjiǔ', meaning: 'Seventy-nine' },
+            { character: '八十', pinyin: 'bāshí', meaning: 'Eighty' },
+            { character: '八十一', pinyin: 'bāshíyī', meaning: 'Eighty-one' },
+            { character: '八十二', pinyin: 'bāshíèr', meaning: 'Eighty-two' },
+            { character: '八十三', pinyin: 'bāshísān', meaning: 'Eighty-three' },
+            { character: '八十四', pinyin: 'bāshísì', meaning: 'Eighty-four' },
+            { character: '八十五', pinyin: 'bāshíwǔ', meaning: 'Eighty-five' },
+            { character: '八十六', pinyin: 'bāshíliù', meaning: 'Eighty-six' },
+            { character: '八十七', pinyin: 'bāshíqī', meaning: 'Eighty-seven' },
+            { character: '八十八', pinyin: 'bāshíbā', meaning: 'Eighty-eight' },
+            { character: '八十九', pinyin: 'bāshíjiǔ', meaning: 'Eighty-nine' },
+            { character: '九十', pinyin: 'jiǔshí', meaning: 'Ninety' },
+            { character: '九十一', pinyin: 'jiǔshíyī', meaning: 'Ninety-one' },
+            { character: '九十二', pinyin: 'jiǔshíèr', meaning: 'Ninety-two' },
+            { character: '九十三', pinyin: 'jiǔshísān', meaning: 'Ninety-three' },
+            { character: '九十四', pinyin: 'jiǔshísì', meaning: 'Ninety-four' },
+            { character: '九十五', pinyin: 'jiǔshíwǔ', meaning: 'Ninety-five' },
+            { character: '九十六', pinyin: 'jiǔshíliù', meaning: 'Ninety-six' },
+            { character: '九十七', pinyin: 'jiǔshíqī', meaning: 'Ninety-seven' },
+            { character: '九十八', pinyin: 'jiǔshíbā', meaning: 'Ninety-eight' },
+            { character: '九十九', pinyin: 'jiǔshíjiǔ', meaning: 'Ninety-nine' },
+            { character: '百', pinyin: 'bǎi', meaning: 'One hundred' }
+        ];
+
+// Navigation
+function showPage(pageId){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const target=document.getElementById(pageId);
+  if(target) target.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===pageId));
+  document.getElementById("nav").classList.remove("open");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+document.getElementById("menuToggle").addEventListener("click",()=>document.getElementById("nav").classList.toggle("open"));
+
+// Translator
+const inputEl=document.getElementById("englishInput");
+const hanziEl=document.getElementById("hanziOutput");
+const pinyinEl=document.getElementById("pinyinOutput");
+const sortedPhrases=Object.keys(dictionary).sort((a,b)=>b.length-a.length);
+let latestChinese="";
+function translateText(){
+  const query=inputEl.value.trim().toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()?]/g,"");
+  if(!query){
+    hanziEl.textContent="Your translation will appear here.";
+    hanziEl.style.color="#98a2b3";hanziEl.style.fontSize="18px";
+    pinyinEl.textContent="";pinyinEl.classList.add("hidden");latestChinese="";return;
+  }
+  let hanzi=[],pinyin=[];
+  if(dictionary[query]){
+    hanzi=[dictionary[query].hanzi];pinyin=[dictionary[query].pinyin];
+  }else{
+    const words=query.split(/\s+/);let i=0;
+    while(i<words.length){
+      let matched=false;
+      for(const phrase of sortedPhrases){
+        const phraseWords=phrase.trim().split(/\s+/);
+        if(phraseWords.length>1 && i+phraseWords.length<=words.length &&
+           words.slice(i,i+phraseWords.length).join(" ")===phrase.trim()){
+          hanzi.push(dictionary[phrase].hanzi);pinyin.push(dictionary[phrase].pinyin);
+          i+=phraseWords.length;matched=true;break;
+        }
+      }
+      if(!matched){
+        const word=words[i];
+        if(dictionary[word]){hanzi.push(dictionary[word].hanzi);pinyin.push(dictionary[word].pinyin);}
+        else if(word){hanzi.push("["+word+"]");pinyin.push("["+word+"]");}
+        i++;
+      }
+    }
+  }
+  latestChinese=hanzi.join(" ");
+  hanziEl.textContent=latestChinese;hanziEl.style.color="#151b27";hanziEl.style.fontSize="";
+  pinyinEl.textContent=pinyin.join(" ");pinyinEl.classList.remove("hidden");
+}
+inputEl.addEventListener("input",translateText);
+function clearTranslator(){inputEl.value="";translateText();inputEl.focus();}
+function speakText(text){
+  if(!("speechSynthesis" in window)){showToast("Text-to-speech is not supported in this browser.");return;}
+  if(!text){showToast("Enter a word or phrase first.");return;}
+  window.speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(text);utterance.lang="zh-CN";utterance.rate=.88;
+  window.speechSynthesis.speak(utterance);
+}
+function speakTranslation(){speakText(latestChinese.replace(/\[[^\]]+\]/g,""));}
+function showToast(message){
+  const t=document.getElementById("toast");t.textContent=message;t.classList.remove("hidden");
+  clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.add("hidden"),2400);
+}
+
+// Flashcards
+let currentIndex=0;
+const revealed=new Set(JSON.parse(localStorage.getItem("chineseLearnerRevealed")||"[]"));
+const charEl=document.getElementById("character");
+const pinyinElCard=document.getElementById("pinyin");
+const meaningEl=document.getElementById("meaning");
+const progressEl=document.getElementById("progress");
+const completedEl=document.getElementById("completed");
+const progressFill=document.getElementById("progressFill");
+function renderCard(){
+  const data=characterDataset[currentIndex];
+  charEl.textContent=data.character;pinyinElCard.textContent=data.pinyin;meaningEl.textContent=data.meaning;
+  const isRevealed=revealed.has(currentIndex);
+  pinyinElCard.classList.toggle("concealed",!isRevealed);
+  meaningEl.classList.toggle("concealed",!isRevealed);
+  progressEl.textContent=`Card ${currentIndex+1} of ${characterDataset.length}`;
+  completedEl.textContent=`${revealed.size} revealed`;
+  progressFill.style.width=`${((currentIndex+1)/characterDataset.length)*100}%`;
+  document.getElementById("revealBtn").textContent=isRevealed?"✓ Revealed":"👁 Reveal";
+}
+function prevCard(){currentIndex=(currentIndex-1+characterDataset.length)%characterDataset.length;renderCard();}
+function nextCard(){currentIndex=(currentIndex+1)%characterDataset.length;renderCard();}
+function revealData(){
+  revealed.add(currentIndex);
+  localStorage.setItem("chineseLearnerRevealed",JSON.stringify([...revealed]));
+  renderCard();
+}
+function playCardAudio(){speakText(characterDataset[currentIndex].character);}
+document.getElementById("prevBtn").addEventListener("click",prevCard);
+document.getElementById("nextBtn").addEventListener("click",nextCard);
+document.getElementById("revealBtn").addEventListener("click",revealData);
+document.getElementById("audioBtn").addEventListener("click",playCardAudio);
+renderCard();
+
+// Word of the day
+const dailyWords=[
+  {hanzi:"你好",pinyin:"nǐ hǎo",meaning:"Hello"},
+  {hanzi:"谢谢",pinyin:"xièxie",meaning:"Thank you"},
+  {hanzi:"朋友",pinyin:"péngyou",meaning:"Friend"},
+  {hanzi:"中国",pinyin:"Zhōngguó",meaning:"China"},
+  {hanzi:"学习",pinyin:"xuéxí",meaning:"Study / Learn"}
+];
+const dayIndex=Math.floor(Date.now()/86400000)%dailyWords.length;
+const word=dailyWords[dayIndex];
+document.getElementById("dailyHanzi").textContent=word.hanzi;
+document.getElementById("dailyPinyin").textContent=`${word.pinyin} · ${word.meaning}`;
+</script>
+</body>
+</html>
